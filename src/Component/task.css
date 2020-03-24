@@ -58,17 +58,28 @@
     transition-timing-function: linear;
 }
 #maindivbtn{
-    width: 100%;
+    width: 90%;
     display: flex;
     align-items: center;
     height: 50px;
+    margin-top: 20px;
 }
 #tbldiv{
-    width: 100%;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 50px;
+    padding: 40px;
+    flex-direction: column;
+    box-shadow: 0px 0px 4px 0px #808080d9;
+    margin-top: 30px;
+}
+#maintbldiv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 #homediv{
@@ -101,4 +112,103 @@ tr,td{
 }
 th{
     color: #145579;
+}
+.css-2b097c-container {
+    position: relative;
+    box-sizing: border-box;
+    width: 50%;
+}
+#d_type{
+    margin-right: 1%;
+    font-weight: 500;
+    color: #8c0606;
+}
+#addall{
+    background-color: #a60023;
+    color: #fff;
+        min-width: 25%;
+      height: 35px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 0 5px 1px #999;
+        /* margin-left: 2%; */
+        font-size: 15px;
+        padding: 4px;
+       
+}
+#addall:hover{
+    border: 2px solid #A60023;
+    background-color: #fff;
+    color: #A60023;
+    transform: scale(1.05);
+    transition-duration: .5s;
+    transition-timing-function: linear;
+}
+#addall:active{
+    border: none;
+    background-color: #A60023;
+    color: #fff;
+    transform: scale(1);
+    transition-duration: .2s;
+    transition-timing-function: linear;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+#albtndiv{
+  
+    width: 38%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+
+}
+#temfile{
+    margin-left: 5%;
+    border: 2px solid #327093;
+    width: 25%;
+    height: 35px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px; 
+    box-shadow: 0 0 5px 1px #999;
+}
+#temfile:hover{
+    border: 2px solid #327093;
+    background-color: #327093;
+    color: #ffffff;
+    transform: scale(1.01);
+    cursor: pointer;
+    /* transition-duration: .5s;
+    transition-timing-function: linear; */
+}
+#temfile:active{
+    border: none;
+    background-color: #327093;
+    color: #fff;
+    transform: scale(1);
+    transition-duration: .2s;
+    transition-timing-function: linear;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+a {
+    color:#327093 ;
+}
+ a:hover{
+  text-decoration: none;
 }
