@@ -194,7 +194,7 @@ class Home extends Component {
         })
 
         .catch(err => {
-          console.log('error:', err.data);
+          console.log('error:', err);
 
         })
     }
@@ -326,6 +326,12 @@ class Home extends Component {
     axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${id},"deviceTypeId":${this.state.sto},"uniqueId":${data}}&sid=${cookies.get("sid")}`)
       .then(res1 => {
         console.log(res1.data);
+        if (res1.data.error === 1002) {
+          toast.warning('Item with such unique property already exists')
+        }
+        else if (res1.data.error === 4) {
+          toast.warning(' Add the unique_id')
+        }
       })
       .catch(err => {
         console.log('err', err);
@@ -568,7 +574,9 @@ class Home extends Component {
 
 
 
-
+<button onClick={()=>{
+ 
+}} >cler</button>
 
 
 
