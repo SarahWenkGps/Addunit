@@ -76,7 +76,7 @@
 }
 #maintbldiv{
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -113,11 +113,7 @@ tr,td{
 th{
     color: #145579;
 }
-.css-2b097c-container {
-    position: relative;
-    box-sizing: border-box;
-    width: 50%;
-}
+
 #d_type{
     margin-right: 1%;
     font-weight: 500;
@@ -164,7 +160,7 @@ th{
 
 #albtndiv{
   
-    width: 38%;
+    width: 58%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -211,4 +207,25 @@ a {
 }
  a:hover{
   text-decoration: none;
+}
+#imgexel{
+    width: 250px;
+    box-shadow: 1px 1px 5px 0px #2f6e92;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#imgexel:hover{
+    transform: scale(1.04);
+    transition-duration: .5s;
+    transition-timing-function: linear;
+    cursor: pointer;
+}
+#inimg{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #160f84;
 }

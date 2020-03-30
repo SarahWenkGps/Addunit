@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
 import Login from './Component/Login';
 import Home from './Component/Home';
+import User from './Component/User';
 import Context from './Component/context';
 import {BrowserRouter,Route , Switch} from 'react-router-dom';
+import Si from './Component/Si';
 
 
 class App extends Component{
@@ -18,12 +20,12 @@ render() {
     <Route exact path ='/' component={Login } />
 
   
-    <Switch>
+    {/* <Switch> */}
     <Route path ='/Home' component={Home} />
-  
+    <Route path ='/User' component={User} />
+    <Route path ='/Si' component={Si} />
     
-    
-    </Switch> 
+    {/* </Switch>  */}
   
    
     </Context.Provider>

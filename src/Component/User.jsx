@@ -2,7 +2,7 @@ import React from 'react';
 import './task.css';
 import { Link } from 'react-router-dom';
 import Context from './context';
-import { Pane, Dialog ,SelectMenu,Button} from "evergreen-ui";
+import { Pane, Dialog } from "evergreen-ui";
 import Component from "@reactions/component";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import IconButton from '@material-ui/core/IconButton';
@@ -53,7 +53,7 @@ const customStyles = {
     return { ...provided, opacity, transition };
   }
 }
-class Home extends Component {
+class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,11 +71,10 @@ class Home extends Component {
       spinadd: false,
       spindevice: true,
       selectspin: false,
-      spinone: false,
+      spinone:false,
       check: '',
       sto: '',
       sto1: '',
-      fruits: [],
       imei: [],
       user: [],
       kitch: [],
@@ -84,8 +83,8 @@ class Home extends Component {
       km: '',
       err1: '',
       nmuser: '',
-      spinall: false,
-
+      spinall:false,
+      
     }
     this.handleFile = this.handleFile.bind(this);
     this.handleChange1 = this.handleChange1.bind(this);
@@ -113,7 +112,6 @@ class Home extends Component {
       /* Update state */
       this.setState({ data: data, cols: make_cols(ws['!ref']) }, () => {
         console.log('ddd', JSON.stringify(this.state.data.length, null, 2));
-
       });
 
       this.setState({ data12: JSON.stringify(this.state.data, null, 2) })
@@ -155,19 +153,19 @@ class Home extends Component {
 
 
   checkimei(item) {
-    axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${item.uniqueId}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid")}`)
+    axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${item.uniqueId}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid1")}`)
       .then(res1 => {
 
         console.log('emie', res1.data.items.length);
         if (this.state.sto.length == 0) {
           return (
-            this.setState({ spinone: false }),
+            this.setState({spinone:false}),
             toast.error(` select device type first`));
         }
         if (res1.data.items.length > 0) {
 
           return (
-            this.setState({ spinone: false }),
+            this.setState({spinone:false}),
             toast.warning('Item with such unique property already exists'));
         }
         if (res1.data.items.length <= 0) {
@@ -191,26 +189,26 @@ class Home extends Component {
     console.log(cookies.get('id'));
     if (item.name.length <= 3) {
       return (
-        this.setState({ spinone: false }),
+        this.setState({spinone:false}),
         toast.warning(`The name is short`));
     }
-
+  
 
     let url = `https://hst-api.wialon.com/wialon/ajax.html?svc=core/create_unit&params={
-          "creatorId":${cookies.get("id")},
+          "creatorId":${cookies.get("iduser")},
           "name":"${item.name}",
           "hwTypeId":${this.state.sto},
           "dataFlags":1}
-      &sid=${cookies.get("sid")}`
+      &sid=${cookies.get("sid1")}`
     console.log(url);
 
     axios.post(url)
       .then(res1 => {
         console.log('id', res1.data.item.id);
         console.log('counter', item.km);
-        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_mileage_counter&params={"itemId":${res1.data.item.id},"newValue":${item.km}}&sid=${cookies.get("sid")}`)
-        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid")}`)
-        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${res1.data.item.id},"deviceTypeId":${this.state.sto},"uniqueId":${item.uniqueId}}&sid=${cookies.get("sid")}`)
+        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_mileage_counter&params={"itemId":${res1.data.item.id},"newValue":${item.km}}&sid=${cookies.get("sid1")}`)
+        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid1")}`)
+        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${res1.data.item.id},"deviceTypeId":${this.state.sto},"uniqueId":${item.uniqueId}}&sid=${cookies.get("sid1")}`)
           .then(res1 => {
 
             console.log('emie', res1.data.error);
@@ -227,19 +225,19 @@ class Home extends Component {
           })
 
 
-        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_admin_field&params={"itemId":${res1.data.item.id},"n":"Report","v":"${item.R_Value}","callMode":"create","id":1}&sid=${cookies.get("sid")}`)
+        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_admin_field&params={"itemId":${res1.data.item.id},"n":"Report","v":"${item.R_Value}","callMode":"create","id":1}&sid=${cookies.get("sid1")}`)
 
         if (item.VIN != undefined) {
-          axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_profile_field&params={"itemId":${res1.data.item.id},"n":"vin","v":"${item.VIN}"}&sid=${cookies.get("sid")}`)
+          axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_profile_field&params={"itemId":${res1.data.item.id},"n":"vin","v":"${item.VIN}"}&sid=${cookies.get("sid1")}`)
         }
 
         toast.success("Unit added successfully ");
-        this.setState({ spinone: false })
+        this.setState({spinone:false})
       })
 
       .catch(err => {
         console.log('error:', err);
-        this.setState({ spinone: false })
+        this.setState({spinone:false})
       })
   }
 
@@ -247,18 +245,56 @@ class Home extends Component {
 
   componentDidMount() {
 
-   
-        this.get_hwdevices();
-        this.get_users();
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('nm');
+    
+    
+    cookies.set("iduser",urlParams.get('id'));
+    cookies.set("username",urlParams.get('nm'));
 
+    axios({
+      url: `http://hst-api.wialon.com/wialon/ajax.html?svc=token/login&params={"token":"${cookies.get("token")}","fl":2,"operateAs":"${urlParams.get('nm')}"}`,
+      method: "get",
+      crossDomain: true,
+      dataType: "jsonp",
+      enctype: "application/json",
+      processData: !1,
+      contentType: !1,
+
+    })
+
+    .then(res1 => {
+     
+      this.setState({
+        data1: res1.data,
+        check: "login"
+      })
+      console.log('data',res1.data);
+      cookies.set("sid1",res1.data.eid);
+   
+      this.get_hwdevices();
+
+    })
+      .catch(err => {
+        console.log('error:' + err);
+        this.setState({
+          check: "notlogin"
+        });
+      })
+    setInterval(() => {
+      axios.post('https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/requests/avl_evts')
+    }, 20000);
 
 
   }
 
   get_users() {
-  
+    let getIndex = this.state.kitch1.findIndex((element) => element.label === cookies.get("name"))
+
+
+    this.setState({ nmuser: this.state.kitch1[getIndex] })
     axios
-      .get(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={ "spec":{"itemsType": "user","propName": "sys_name","propValueMask": "*","sortType": "sys_name","propType": "property"},"force": 0,"flags": 5,"from": 0,"to":0}&sid=${cookies.get("sid")}`, {
+      .get(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={ "spec":{"itemsType": "user","propName": "sys_name","propValueMask": "*","sortType": "sys_name","propType": "property"},"force": 0,"flags": 5,"from": 0,"to":0}&sid=${cookies.get("sid1")}`, {
         headers: {
           Accept: "application/json"
         }
@@ -266,16 +302,20 @@ class Home extends Component {
       .then(res => {
         this.setState({
           user: res.data.items,
-          check: "login"
+
         });
         console.log("imie", this.state.user);
         let arr = [];
         for (let index = 0; index < this.state.user.length; index++) {
           let obj = {
             value: this.state.user[index].id,
-            label:this.state.user[index].nm
-           
-            
+            label:(<div style={{width:'100%',display:'flex',justifyContent:'space-between'}}  onClick={()=>{
+              console.log('ids',this.state.user[index].id);
+              window.location.href =`/User?id=${this.state.user[index].id}&nm=${this.state.user[index].nm}`;
+            }}  >
+               {this.state.user[index].nm}
+             </div>
+                )
           };
           arr.push(obj);
         }
@@ -286,7 +326,6 @@ class Home extends Component {
       .catch(err => {
 
         console.log("error:", err);
-        this.setState({check: "notlogin"})
       });
   }
 
@@ -298,7 +337,7 @@ class Home extends Component {
   get_hwdevices() {
 
     axios
-      .get(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/get_hw_types&params={"filterType":"name"}&sid=${cookies.get("sid")}`, {
+      .get(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/get_hw_types&params={"filterType":"name"}&sid=${cookies.get("sid1")}`, {
         headers: {
           Accept: "application/json"
         }
@@ -332,113 +371,106 @@ class Home extends Component {
   getcheckmultyimei = async () => {
     if (this.state.sto.length == 0) {
       return (
-        this.setState({ spinall: false }),
+        this.setState({spinall:false}),
         toast.error(` select device type first`))
-
+     
     }
     else {
-      var succes = 0;
-      var not = 0;
-      var counter = 0;
-      var counter3 = 0;
+      var succes =0;
+      var not =0;
+      var counter=0;
+      var counter3=0;
       for (var i = 0; i < this.state.mapdata.length; i++) {
         counter3++;
-
+       
         let R_Value = this.state.mapdata[i].R_Value;
         let VIN = this.state.mapdata[i].VIN
         let km = this.state.mapdata[i].km;
         let name = this.state.mapdata[i].name;
         let imei = this.state.mapdata[i].uniqueId;
-        let lenth = i;
+        let lenth =i;
 
         try {
-          if (counter3 == this.state.mapdata.length) {
-            this.setState({ spinall: false })
-          }
-          let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${imei}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid")}`);
-          let { data } = res.data;
-          console.log(res.data);
-
-          if (res.data.items.length > 0) {
-            not = not + 1;
-            this.state.fruits.push({
-              name:this.state.mapdata[i].name,
-              error:'uniqueId already exist',
-            });
-            console.log(this.state.fruits);
-            localStorage.setItem("employees", JSON.stringify(this.state.fruits));
-            var storedNames = JSON.parse(localStorage.getItem("employees"));
-
-          }
-          else if (res.data.items.length <= 0) {
-
-            let res1 = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/create_unit&params={"creatorId":${cookies.get("id")},"name":"${name}","hwTypeId":${this.state.sto},"dataFlags":1}&sid=${cookies.get("sid")}`);
-            let { data } = res1.data;
-
-            console.log('res2', res1.data);
-
-            await this.addiemi(imei, res1.data.item.id)
-            await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid")}`)
-            await this.addkm(km, res1.data.item.id)
-            await this.addR_value(R_Value, res1.data.item.id)
-            await this.addVIN(VIN, res1.data.item.id)
-
-            counter = counter + 1
-          }
-
-        } catch (error) {
-          console.log(error);
-          if (counter3 == this.state.mapdata.length) {
-            this.setState({ spinall: false })
-          }
-        }
-        console.log('counter', counter);
-        console.log('counter3', counter3);
-        console.log('lenth', lenth);
-        console.log('i', i);
-        console.log('this.state.mapdata.length', this.state.mapdata.length);
-        if (counter3 == this.state.mapdata.length) {
-
-          if (counter > 0) {
-            toast.success(`Item added succesfully ${counter}`)
-          }
-
-          if (this.state.mapdata.length - counter > 0) {
-            toast.error(`Item with such unique property already exists ${this.state.mapdata.length - counter}`)
-          }
-
-
-
-        }
-      }
+         if (counter3==this.state.mapdata.length) {
+          this.setState({spinall:false})
+         }
+    let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${imei}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid1")}`);
+    let { data } = res.data;
+    console.log(res.data);
+    
+    if (res.data.items.length > 0) {
+     
+      not=not+1;
+     
     }
-  };
+      else if (res.data.items.length <= 0) {
+  
+    let res1 = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/create_unit&params={"creatorId":${cookies.get("iduser")},"name":"${name}","hwTypeId":${this.state.sto},"dataFlags":1}&sid=${cookies.get("sid1")}`);
+    let { data } = res1.data;
+  
+     console.log('res2',res1.data);
+     
+     await this.addiemi(imei, res1.data.item.id)
+     await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid1")}`)
+     await  this.addkm(km, res1.data.item.id)
+     await  this.addR_value(R_Value, res1.data.item.id)
+     await this.addVIN(VIN, res1.data.item.id)
+       
+      counter=counter+1      
+      }
+
+    }catch (error) {
+      console.log(error);
+      if (counter3==this.state.mapdata.length) {
+        this.setState({spinall:false})
+       }
+    }
+    console.log('counter',counter);
+    console.log('counter3',counter3);
+    console.log('lenth',lenth);
+    console.log('i',i);
+      console.log('this.state.mapdata.length',this.state.mapdata.length);
+    if (counter3==this.state.mapdata.length) {
+    
+        if (counter>0) {
+          toast.success(`Item added succesfully ${counter}`)
+        }
+       
+       if (this.state.mapdata.length-counter>0) {
+        toast.error(`Item with such unique property already exists ${this.state.mapdata.length-counter}`)
+       }
+        
+    
+    
+    }
+  }
+  }
+};
 
 
 
   async addiemi(data, id) {
     console.log('data addimei', data);
     try {
-      let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${id},"deviceTypeId":${this.state.sto},"uniqueId":${data}}&sid=${cookies.get("sid")}`)
-      let { data1 } = res.data;
-      console.log('iemi33', res.data);
-      if (res.data.error === 1002) {
-        toast.warning('Item with such unique property already exists')
-      }
-      else if (res.data.error === 4) {
-        toast.warning(' Add the unique_id')
-      }
-    }
-    catch (error) {
-      console.log(error);
-    }
-
+      let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${id},"deviceTypeId":${this.state.sto},"uniqueId":${data}}&sid=${cookies.get("sid1")}`)
+    let { data1 } = res.data;
+        console.log('iemi33',res.data);
+        if (res.data.error === 1002) {
+          toast.warning('Item with such unique property already exists')
+        }
+        else if (res.data.error === 4) {
+          toast.warning(' Add the unique_id')
+        }}
+        catch (error) {
+          console.log(error);
+        }
+    
 
   }
 
   addR_value(data, id) {
     console.log('data rvalue', data);
-    axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_admin_field&params={"itemId":${id},"n":"Report","v":"${data}","callMode":"create","id":1}&sid=${cookies.get("sid")}`)
+    axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_admin_field&params={"itemId":${id},"n":"Report","v":"${data}","callMode":"create","id":1}&sid=${cookies.get("sid1")}`)
       .then(res1 => {
         console.log(res1.data);
       })
@@ -451,7 +483,7 @@ class Home extends Component {
   addVIN(data, id) {
     if (data != undefined) {
       console.log('data rvalue', data);
-      axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_profile_field&params={"itemId":${id},"n":"vin","v":"${data}"}&sid=${cookies.get("sid")}`)
+      axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_profile_field&params={"itemId":${id},"n":"vin","v":"${data}"}&sid=${cookies.get("sid1")}`)
         .then(res1 => {
           console.log(res1.data);
         })
@@ -465,7 +497,7 @@ class Home extends Component {
     console.log('data addkm', data);
     console.log('itemid', this.state.allid);
 
-    axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_mileage_counter&params={"itemId":${id},"newValue":${data}}&sid=${cookies.get("sid")}`)
+    axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_mileage_counter&params={"itemId":${id},"newValue":${data}}&sid=${cookies.get("sid1")}`)
       .then(res1 => {
         console.log(res1.data);
       })
@@ -498,6 +530,7 @@ class Home extends Component {
                 <ToastContainer
                   position="bottom-center"
                   autoClose={5000}
+                  autoClose={false}
                   hideProgressBar
                   newestOnTop
                   closeOnClick
@@ -520,28 +553,7 @@ class Home extends Component {
                       <div id='teamnav'>
                         {/* <i className="fas fa-sign-out-alt"></i> */}
 
-                        <div> <span style={{color:'#327093',fontSize:'15px'}} >Login as : </span> <Component initialState={{ selected: cookies.get("name") }}>
-                          {({ setState, state }) => (
-                            <SelectMenu
-                              title="Select name"
-                              options={
-                                this.state.kitch1
-                              }
-                              selected={state.selected}
-                              onSelect={item => {
-                                setState({ selected: item.value })
-                            
-                               
-                                window.location.href = `/User?id=${item.value}&nm=${item.label}`;
-                            
-                            
-                            }}
-                            >
-                              <Button>{state.selected || 'Select name...'}</Button>
-                            </SelectMenu>
-                          )}
-                        </Component>
- </div>
+                        <div>{cookies.get("username")} </div>
                      
                         <Tooltip title="Logout" onClick={() => {
                           cookies.remove("token");
@@ -561,8 +573,7 @@ class Home extends Component {
                   </Navbar.Collapse>
 
                 </Navbar>
-             
-             
+
                 <div id='maintbldiv'>
                   <div id='maindivbtn'>
 
@@ -584,11 +595,10 @@ class Home extends Component {
 
                         <div id='upload' onClick={() => {
                           console.log('eses', this.state.data12);
-                        
                           this.setState({
                             mapdata: JSON.parse(this.state.data12)
                           })
-
+                          this.setState({ dtss: this.state.data12 })
                           setTimeout(() => {
                             this.setState({ spinitem: true })
                           }, 200);
@@ -601,8 +611,8 @@ class Home extends Component {
 
 
                   </div>
-
-               
+             
+                
                 </div>
 
                 {this.state.spinitem === false ? (
@@ -626,49 +636,50 @@ class Home extends Component {
                           console.log('sto', e.value);
 
                         }}
+                       
                         value={selectedOption}
                         styles={customStyles}
                         options={this.state.kitch}
                       />
                     </div>
-                    {this.state.spinone == true ? (
-                      <div
-                        style={{
-                          width: "90%",
-                          position: "absolute",
-
-                        }}>
-                        <Lottie
-                          options={{
-                            animationData: load
-                          }}
-                          width={300}
-                          height={100}
-                          position="absolute"
-                        />
-                      </div>
-                    ) : null}
-                    {this.state.spinall == true ? (
-                      <div
-                        style={{
-                          width: "90%",
-                          position: "absolute",
-
-                        }}>
-                        <Lottie
-                          options={{
-                            animationData: load
-                          }}
-                          width={300}
-                          height={100}
-                          position="absolute"
-                        />
-                      </div>
-                    ) : null}
+                    {this.state.spinone==true ? (
+                            <div
+                              style={{
+                                width: "90%",
+                                position: "absolute",
+                             
+                              }}>
+                              <Lottie
+                                options={{
+                                  animationData: load
+                                }}
+                                width={300}
+                                height={100}
+                                position="absolute"
+                              />
+                            </div>
+                          ) : null}
+                    {this.state.spinall==true ? (
+                            <div
+                              style={{
+                                width: "90%",
+                                position: "absolute",
+                             
+                              }}>
+                              <Lottie
+                                options={{
+                                  animationData: load
+                                }}
+                                width={300}
+                                height={100}
+                                position="absolute"
+                              />
+                            </div>
+                          ) : null}
 
                     <div id='albtndiv'>
                       <div id='addall' onClick={() => {
-                        this.setState({ spinall: true })
+                        this.setState({spinall:true})
                         this.getcheckmultyimei()
                       }} >Add all {this.state.mapdata.length} unit</div>
                     </div>
@@ -676,8 +687,8 @@ class Home extends Component {
 
 
                   </div>
-
-
+              
+            
                   <Table striped bordered hover responsive >
                     <thead>
                       <tr>
@@ -710,7 +721,7 @@ class Home extends Component {
 
                             <div style={{ display: 'flex', justifyContent: 'center' }} onClick={() => {
                               this.checkimei(item)
-                              this.setState({ spinone: true })
+                              this.setState({spinone:true})
 
                             }}> <AddBoxIcon id='btntbladd' />  </div>
 
@@ -722,7 +733,7 @@ class Home extends Component {
 
                     </tbody>
                   </Table>
-
+             
 
 
 
@@ -730,17 +741,7 @@ class Home extends Component {
                 </div>)}
 
 
-                <button onClick={() => {
-                  this.state.fruits.push({
-                    name: 'Rushabh',
-                    age: 27
-                  });
-                  console.log(this.state.fruits);
-                  localStorage.setItem("employees", JSON.stringify(this.state.fruits));
-                  var storedNames = JSON.parse(localStorage.getItem("employees"));
-                
 
-                }} >push</button>
 
 
 
@@ -786,4 +787,4 @@ class Home extends Component {
 
   }
 }
-export default Home;
+export default User;
