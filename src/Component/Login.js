@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './task.css';
 // import Iframe from 'react-iframe';
 import host from './host';
-import { Link } from 'react-router-dom';
+
 
 class Login extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class Login extends Component {
    
   }
  componentDidMount(){
-  window.location.href=`http://tracking.wenkgps.com/login.html?access_type=-1&duration=18000&redirect_uri=${host}Si`
+  window.location.href=`http://tracking.wenkgps.com/login.html?access_type=-1&duration=18000&client_id=Add%20Units&redirect_uri=${host}Si`
  }
   render() {
     return (

@@ -2,7 +2,6 @@ import React from 'react';
 import './task.css';
 import { Link } from 'react-router-dom';
 import Context from './context';
-import { Pane, Dialog } from "evergreen-ui";
 import Component from "@reactions/component";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,7 +18,6 @@ import { SheetJSFT } from './types';
 import Tooltip from '@material-ui/core/Tooltip';
 import XLSX from 'xlsx';
 import Select from 'react-select';
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -84,7 +82,7 @@ class User extends Component {
       err1: '',
       nmuser: '',
       spinall:false,
-      
+      fruits: [],
     }
     this.handleFile = this.handleFile.bind(this);
     this.handleChange1 = this.handleChange1.bind(this);
@@ -156,8 +154,8 @@ class User extends Component {
     axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${item.uniqueId}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid1")}`)
       .then(res1 => {
 
-        console.log('emie', res1.data.items.length);
-        if (this.state.sto.length == 0) {
+        // console.log('emie', res1.data.items.length);
+        if (this.state.sto.length === 0) {
           return (
             this.setState({spinone:false}),
             toast.error(` select device type first`));
@@ -172,21 +170,18 @@ class User extends Component {
           return (this.add(item));
 
         }
-        console.log('state', this.state.err1);
+        // console.log('state', this.state.err1);
 
       })
       .catch(err => {
-        console.log('error:', err);
+        // console.log('error:', err);
       })
   }
 
 
 
   add(item) {
-    console.log(item.name);
-    console.log(item.type);
-    console.log(cookies.get('sid'));
-    console.log(cookies.get('id'));
+  
     if (item.name.length <= 3) {
       return (
         this.setState({spinone:false}),
@@ -200,18 +195,18 @@ class User extends Component {
           "hwTypeId":${this.state.sto},
           "dataFlags":1}
       &sid=${cookies.get("sid1")}`
-    console.log(url);
+   
 
     axios.post(url)
       .then(res1 => {
-        console.log('id', res1.data.item.id);
-        console.log('counter', item.km);
+       
         axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_mileage_counter&params={"itemId":${res1.data.item.id},"newValue":${item.km}}&sid=${cookies.get("sid1")}`)
         axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid1")}`)
+        axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/batch&params={"params":[{"svc":"item/update_custom_property","params":{"itemId":${res1.data.item.id},"name":"img_rot","value":1}}],"flags":0}&sid=${cookies.get("sid1")}`);
         axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${res1.data.item.id},"deviceTypeId":${this.state.sto},"uniqueId":${item.uniqueId}}&sid=${cookies.get("sid1")}`)
           .then(res1 => {
 
-            console.log('emie', res1.data.error);
+       
             if (res1.data.error === 1002) {
               this.setState({ err1: true })
 
@@ -221,13 +216,13 @@ class User extends Component {
             }
           })
           .catch(err => {
-            console.log('error:' + err.response);
+            // console.log('error:' + err.response);
           })
 
 
         axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_admin_field&params={"itemId":${res1.data.item.id},"n":"Report","v":"${item.R_Value}","callMode":"create","id":1}&sid=${cookies.get("sid1")}`)
 
-        if (item.VIN != undefined) {
+        if (item.VIN !== undefined) {
           axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_profile_field&params={"itemId":${res1.data.item.id},"n":"vin","v":"${item.VIN}"}&sid=${cookies.get("sid1")}`)
         }
 
@@ -236,7 +231,7 @@ class User extends Component {
       })
 
       .catch(err => {
-        console.log('error:', err);
+        // console.log('error:', err);
         this.setState({spinone:false})
       })
   }
@@ -246,7 +241,7 @@ class User extends Component {
   componentDidMount() {
 
     const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('nm');
+   
     
     
     cookies.set("iduser",urlParams.get('id'));
@@ -269,14 +264,14 @@ class User extends Component {
         data1: res1.data,
         check: "login"
       })
-      console.log('data',res1.data);
+    
       cookies.set("sid1",res1.data.eid);
    
       this.get_hwdevices();
 
     })
       .catch(err => {
-        console.log('error:' + err);
+        // console.log('error:' + err);
         this.setState({
           check: "notlogin"
         });
@@ -304,7 +299,7 @@ class User extends Component {
           user: res.data.items,
 
         });
-        console.log("imie", this.state.user);
+     
         let arr = [];
         for (let index = 0; index < this.state.user.length; index++) {
           let obj = {
@@ -325,7 +320,7 @@ class User extends Component {
       })
       .catch(err => {
 
-        console.log("error:", err);
+        // console.log("error:", err);
       });
   }
 
@@ -347,7 +342,7 @@ class User extends Component {
           imei: res.data,
           spindevice: false
         });
-        console.log("imie", this.state.imei);
+      
         let arr = [];
         for (let index = 0; index < this.state.imei.length; index++) {
           let obj = {
@@ -362,21 +357,21 @@ class User extends Component {
       })
       .catch(err => {
         this.setState({ spindevice: false })
-        console.log("error:", err);
+        // console.log("error:", err);
       });
   }
 
 
 
   getcheckmultyimei = async () => {
-    if (this.state.sto.length == 0) {
+    if (this.state.sto.length === 0) {
       return (
         this.setState({spinall:false}),
         toast.error(` select device type first`))
      
     }
     else {
-      var succes =0;
+     
       var not =0;
       var counter=0;
       var counter3=0;
@@ -388,30 +383,59 @@ class User extends Component {
         let km = this.state.mapdata[i].km;
         let name = this.state.mapdata[i].name;
         let imei = this.state.mapdata[i].uniqueId;
-        let lenth =i;
+       
 
         try {
-         if (counter3==this.state.mapdata.length) {
+         if (counter3===this.state.mapdata.length) {
           this.setState({spinall:false})
          }
     let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${imei}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid1")}`);
-    let { data } = res.data;
-    console.log(res.data);
+    // let { data } = res.data;
+  
     
     if (res.data.items.length > 0) {
      
       not=not+1;
+      this.state.fruits.push({
+        name:this.state.mapdata[i].name,
+        imei:this.state.mapdata[i].uniqueId,
+        km : this.state.mapdata[i].km,
+        R_Value : this.state.mapdata[i].R_Value,
+       VIN : this.state.mapdata[i].VIN,
+        error:'uniqueId already exist',
+      });
+    
+      localStorage.setItem("employees", JSON.stringify(this.state.fruits));
      
     }
       else if (res.data.items.length <= 0) {
+        if (name.length <= 3) {
+          not = not + 1;
+            this.setState({ spinall: false })
+            this.state.fruits.push({
+              name:this.state.mapdata[i].name,
+              imei:this.state.mapdata[i].uniqueId,
+              km : this.state.mapdata[i].km,
+              R_Value : this.state.mapdata[i].R_Value,
+             VIN : this.state.mapdata[i].VIN,
+              error:'name is short',
+            });
+         
+            localStorage.setItem("employees", JSON.stringify(this.state.fruits));
+          
+            
+        }
+
+
   
     let res1 = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/create_unit&params={"creatorId":${cookies.get("iduser")},"name":"${name}","hwTypeId":${this.state.sto},"dataFlags":1}&sid=${cookies.get("sid1")}`);
-    let { data } = res1.data;
+    // let { data } = res1.data;
   
-     console.log('res2',res1.data);
+   
      
      await this.addiemi(imei, res1.data.item.id)
      await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid1")}`)
+     await  axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/batch&params={"params":[{"svc":"item/update_custom_property","params":{"itemId":${res1.data.item.id},"name":"img_rot","value":1}}],"flags":0}&sid=${cookies.get("sid1")}`);
      await  this.addkm(km, res1.data.item.id)
      await  this.addR_value(R_Value, res1.data.item.id)
      await this.addVIN(VIN, res1.data.item.id)
@@ -421,24 +445,36 @@ class User extends Component {
 
     }catch (error) {
       console.log(error);
-      if (counter3==this.state.mapdata.length) {
+      if (counter3===this.state.mapdata.length) {
         this.setState({spinall:false})
        }
     }
-    console.log('counter',counter);
-    console.log('counter3',counter3);
-    console.log('lenth',lenth);
-    console.log('i',i);
-      console.log('this.state.mapdata.length',this.state.mapdata.length);
-    if (counter3==this.state.mapdata.length) {
+    // console.log('counter',counter);
+    // console.log('counter3',counter3);
+    // console.log('lenth',lenth);
+    // console.log('i',i);
+      // console.log('this.state.mapdata.length',this.state.mapdata.length);
+    if (counter3===this.state.mapdata.length) {
     
         if (counter>0) {
-          toast.success(`Item added succesfully ${counter}`)
+          toast.success(`Item added successfully ${counter}`)
+        }
+        if (counter===this.state.mapdata.length) {
+         
+          setTimeout(() => {
+            return ( window.location.href='/Succes')
+          }, 2000);
+          
         }
        
        if (this.state.mapdata.length-counter>0) {
-        toast.error(`Item with such unique property already exists ${this.state.mapdata.length-counter}`)
-       }
+        toast.error(`Failed to adds ${this.state.mapdata.length-counter}`)
+      setTimeout(() => {
+        return (this.onSubmit())
+      }, 2000);
+      
+      
+      }
         
     
     
@@ -447,62 +483,59 @@ class User extends Component {
   }
 };
 
-
+onSubmit(){
+  window.location.href='/Failed'
+//  return(<Redirect to='/Failed' />) 
+}
 
   async addiemi(data, id) {
-    console.log('data addimei', data);
+    // console.log('data addimei', data);
     try {
-      let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${id},"deviceTypeId":${this.state.sto},"uniqueId":${data}}&sid=${cookies.get("sid1")}`)
-    let { data1 } = res.data;
-        console.log('iemi33',res.data);
-        if (res.data.error === 1002) {
-          toast.warning('Item with such unique property already exists')
-        }
-        else if (res.data.error === 4) {
-          toast.warning(' Add the unique_id')
-        }}
+     await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${id},"deviceTypeId":${this.state.sto},"uniqueId":${data}}&sid=${cookies.get("sid1")}`)
+    // let { data1 } = res.data;
+       
+    }
         catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     
 
   }
 
   addR_value(data, id) {
-    console.log('data rvalue', data);
+    // console.log('data rvalue', data);
     axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_admin_field&params={"itemId":${id},"n":"Report","v":"${data}","callMode":"create","id":1}&sid=${cookies.get("sid1")}`)
       .then(res1 => {
-        console.log(res1.data);
+      
       })
       .catch(err => {
-        console.log('err', err);
+        // console.log('err', err);
       })
 
   }
 
   addVIN(data, id) {
-    if (data != undefined) {
+    if (data !== undefined) {
       console.log('data rvalue', data);
       axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=item/update_profile_field&params={"itemId":${id},"n":"vin","v":"${data}"}&sid=${cookies.get("sid1")}`)
         .then(res1 => {
-          console.log(res1.data);
+         
         })
         .catch(err => {
-          console.log('err', err);
+          // console.log('err', err);
         })
     }
   }
 
   addkm(data, id) {
-    console.log('data addkm', data);
-    console.log('itemid', this.state.allid);
+   
 
     axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_mileage_counter&params={"itemId":${id},"newValue":${data}}&sid=${cookies.get("sid1")}`)
       .then(res1 => {
-        console.log(res1.data);
+     
       })
       .catch(err => {
-        console.log('err', err);
+        // console.log('err', err);
       })
 
   }
@@ -510,7 +543,7 @@ class User extends Component {
 
   handleChange = selectedOption => {
     this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
+    // console.log(`Option selected:`, selectedOption);
   };
 
 
@@ -521,7 +554,7 @@ class User extends Component {
       <Context.Consumer>
         {ctx => {
           if (this.state.check === "notlogin") {
-            return <p >sdsdsd</p>;
+            return  <Redirect to='/'></Redirect>;;
           } else if (this.state.check === "login" && this.state.spindevice === false) {
 
             return (
@@ -529,7 +562,7 @@ class User extends Component {
               <div  >
                 <ToastContainer
                   position="bottom-center"
-                  autoClose={5000}
+            
                   autoClose={false}
                   hideProgressBar
                   newestOnTop
@@ -543,7 +576,7 @@ class User extends Component {
                 <Navbar expand="lg" id="navmai">
 
 
-                  <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} /> </Navbar.Brand>
+                  <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ color: 'white' }} />
                   <Navbar.Collapse id="basic-navbar-nav" style={{ color: 'white' }} >
 
@@ -642,7 +675,7 @@ class User extends Component {
                         options={this.state.kitch}
                       />
                     </div>
-                    {this.state.spinone==true ? (
+                    {this.state.spinone===true ? (
                             <div
                               style={{
                                 width: "90%",
@@ -659,7 +692,7 @@ class User extends Component {
                               />
                             </div>
                           ) : null}
-                    {this.state.spinall==true ? (
+                    {this.state.spinall===true ? (
                             <div
                               style={{
                                 width: "90%",

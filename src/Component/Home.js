@@ -1,6 +1,6 @@
 import React from 'react';
 import './task.css';
-import { Link } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import Context from './context';
 import { Pane, Dialog ,SelectMenu,Button} from "evergreen-ui";
 import Component from "@reactions/component";
@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Redirect } from "react-router-dom";
 import { Table, Navbar } from 'react-bootstrap';
+
 import Cookies from "universal-cookie";
 import axios from 'axios';
 import Lottie from "lottie-react-web";
@@ -54,6 +55,7 @@ const customStyles = {
   }
 }
 class Home extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -153,6 +155,10 @@ class Home extends Component {
 
   }
 
+  onSubmit(){
+    window.location.href='/Faild'
+    
+  }
 
   checkimei(item) {
     axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${item.uniqueId}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid")}`)
@@ -247,7 +253,12 @@ class Home extends Component {
 
   componentDidMount() {
 
-   
+   if (cookies.get("token")){
+this.setState({ check: "login"})
+   }
+   else{
+    this.setState({check: "notlogin"})
+   }
         this.get_hwdevices();
         this.get_users();
 
@@ -266,7 +277,7 @@ class Home extends Component {
       .then(res => {
         this.setState({
           user: res.data.items,
-          check: "login"
+         
         });
         console.log("imie", this.state.user);
         let arr = [];
@@ -286,7 +297,7 @@ class Home extends Component {
       .catch(err => {
 
         console.log("error:", err);
-        this.setState({check: "notlogin"})
+       
       });
   }
 
@@ -345,7 +356,7 @@ class Home extends Component {
         counter3++;
 
         let R_Value = this.state.mapdata[i].R_Value;
-        let VIN = this.state.mapdata[i].VIN
+        let VIN = this.state.mapdata[i].VIN;
         let km = this.state.mapdata[i].km;
         let name = this.state.mapdata[i].name;
         let imei = this.state.mapdata[i].uniqueId;
@@ -363,15 +374,34 @@ class Home extends Component {
             not = not + 1;
             this.state.fruits.push({
               name:this.state.mapdata[i].name,
+              imei:this.state.mapdata[i].uniqueId,
+              km : this.state.mapdata[i].km,
+              R_Value : this.state.mapdata[i].R_Value,
+             VIN : this.state.mapdata[i].VIN,
               error:'uniqueId already exist',
             });
             console.log(this.state.fruits);
             localStorage.setItem("employees", JSON.stringify(this.state.fruits));
-            var storedNames = JSON.parse(localStorage.getItem("employees"));
+          
 
           }
           else if (res.data.items.length <= 0) {
-
+            if (name.length <= 3) {
+              not = not + 1;
+                this.setState({ spinall: false })
+                this.state.fruits.push({
+                  name:this.state.mapdata[i].name,
+                  imei:this.state.mapdata[i].uniqueId,
+                  km : this.state.mapdata[i].km,
+                  R_Value : this.state.mapdata[i].R_Value,
+                 VIN : this.state.mapdata[i].VIN,
+                  error:'name is short',
+                });
+                console.log(this.state.fruits);
+                localStorage.setItem("employees", JSON.stringify(this.state.fruits));
+                var storedNames = JSON.parse(localStorage.getItem("employees"));
+                
+            }
             let res1 = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/create_unit&params={"creatorId":${cookies.get("id")},"name":"${name}","hwTypeId":${this.state.sto},"dataFlags":1}&sid=${cookies.get("sid")}`);
             let { data } = res1.data;
 
@@ -400,11 +430,12 @@ class Home extends Component {
         if (counter3 == this.state.mapdata.length) {
 
           if (counter > 0) {
-            toast.success(`Item added succesfully ${counter}`)
+            toast.success(`Units added successfully ${counter}`)
           }
 
           if (this.state.mapdata.length - counter > 0) {
-            toast.error(`Item with such unique property already exists ${this.state.mapdata.length - counter}`)
+            toast.error(`Failed to adds ${this.state.mapdata.length - counter}`)
+            return (this.onSubmit())
           }
 
 
@@ -422,12 +453,7 @@ class Home extends Component {
       let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_device_type&params={"itemId":${id},"deviceTypeId":${this.state.sto},"uniqueId":${data}}&sid=${cookies.get("sid")}`)
       let { data1 } = res.data;
       console.log('iemi33', res.data);
-      if (res.data.error === 1002) {
-        toast.warning('Item with such unique property already exists')
-      }
-      else if (res.data.error === 4) {
-        toast.warning(' Add the unique_id')
-      }
+  
     }
     catch (error) {
       console.log(error);
@@ -489,7 +515,7 @@ class Home extends Component {
       <Context.Consumer>
         {ctx => {
           if (this.state.check === "notlogin") {
-            return <p >sdsdsd</p>;
+            return <Redirect to='/'></Redirect>
           } else if (this.state.check === "login" && this.state.spindevice === false) {
 
             return (
