@@ -7,6 +7,7 @@
     width: 100%;
     display: flex;
     flex-direction: row-reverse;
+    align-items: center;
 }
 #teamnav{
     display: flex;
@@ -42,7 +43,8 @@
 #upload{
     background-color: #327093;
     color: #fdfdfd;
-    width: 10%;
+    min-width: 10%;
+    padding: 10px;
     height: 35px;
     display: flex;
     align-items: center;
