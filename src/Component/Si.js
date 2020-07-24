@@ -1,5 +1,5 @@
 import React from 'react';
-import './task.css';
+import '../assets/css/task.css';
 import Context from './context';
 import { SelectMenu, Button } from "evergreen-ui";
 import Component from "@reactions/component";
@@ -163,7 +163,7 @@ class Si extends Component {
                 <Navbar expand="lg" id="navmai">
 
 
-                  <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
+                  <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('../assets/img/logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ color: 'white' }} />
                   <Navbar.Collapse id="basic-navbar-nav" style={{ color: 'white' }} >
 
@@ -232,16 +232,28 @@ class Si extends Component {
                       window.location.href = `/User?id=${this.state.id}&nm=${this.state.name}`;
                     }}  >
                       <div id='inimg' >Adding from Excel</div>
-                      <img src={require('./xlsx.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
+                      <img src={require('../assets/img/xlsx.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
 
                     </div>
+
 
                     <div id='imgexel' onClick={() => {
-                      window.location.href = `/Form1?id=${this.state.id}&nm=${this.state.name}`;
+                      window.location.href = `/Units?id=${this.state.id}&nm=${this.state.name}`;
+                    }}  >
+                      <div id='inimg' >Check Units  </div>
+                      <img src={require('../assets/img/permit.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
+
+                    </div>
+
+
+
+
+                    {/* <div id='imgexel' onClick={() => {
+                      window.location.href = `/Tags?id=${this.state.id}&nm=${this.state.name}`;
                     }} >
                       <div id='inimg' >Adding from Template</div>
-                      <img src={require('./template.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
-                    </div>
+                      <img src={require('../assets/img/template.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
+                    </div> */}
 
 
 
@@ -249,7 +261,7 @@ class Si extends Component {
                       window.location.href = `/Accounts?id=${this.state.id}&nm=${this.state.name}`;
                     }} >
                       <div id='inimg' >Check Accounts</div>
-                      <img src={require('./security.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
+                      <img src={require('../assets/img/security.png')} style={{ width: '150px', height: '150px' }} alt='alt' />
                     </div>
 
 

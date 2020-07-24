@@ -370,7 +370,7 @@ cookies.set("unit_id",res1.data.item.id)
 
           <div id='in_form1' >
             <Navbar expand="lg" style={{ display: 'flex', width: '100%' }}>
-              <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
+              <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('../assets/img/logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
 
 
 

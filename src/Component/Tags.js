@@ -17,6 +17,7 @@ import { make_cols } from './MakeColumns';
 import { SheetJSFT } from './types';
 import Tooltip from '@material-ui/core/Tooltip';
 import XLSX from 'xlsx';
+import $ from "min-jquery";
 import Select from 'react-select';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { ToastContainer, toast } from "react-toastify";
@@ -51,7 +52,7 @@ const customStyles = {
     return { ...provided, opacity, transition };
   }
 }
-class User extends Component {
+class Tags extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,6 +84,7 @@ class User extends Component {
       nmuser: '',
       spinall:false,
       fruits: [],
+      source_id:''
     }
     this.handleFile = this.handleFile.bind(this);
     this.handleChange1 = this.handleChange1.bind(this);
@@ -280,7 +282,22 @@ class User extends Component {
       axios.post('https://sdk.wialon.com/wiki/en/sidebar/remoteapi/apiref/requests/avl_evts')
     }, 20000);
 
-
+    axios({
+        url: `https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_resource","propName":"drivers","propValueMask":"*","sortType":"drivers","propType":"property"},"force":0,"flags":33037,"from":0,"to":0}&sid=${cookies.get("sid1")}`,
+        method: "post",
+        crossDomain: true,
+        dataType: "jsonp",
+        enctype: "application/json",
+      })
+  
+        .then(res1 => {
+          console.log('res', res1.data.items[2].id);
+          this.setState({ source_id: res1.data.items[2].id })
+  
+        })
+        .catch(err => {
+          // console.log('error:' + err);
+        })
   }
 
   get_users() {
@@ -364,123 +381,40 @@ class User extends Component {
 
 
   getcheckmultyimei = async () => {
-    if (this.state.sto.length === 0) {
-      return (
-        this.setState({spinall:false}),
-        toast.error(` select device type first`))
-     
-    }
-    else {
-     
-      var not =0;
-      var counter=0;
-      var counter3=0;
-      for (var i = 0; i < this.state.mapdata.length; i++) {
-        counter3++;
-       
-        let R_Value = this.state.mapdata[i].R_Value;
-        let VIN = this.state.mapdata[i].VIN
-        let km = this.state.mapdata[i].km;
-        let name = this.state.mapdata[i].name;
-        let imei = this.state.mapdata[i].uniqueId;
-       
-
-        try {
-         if (counter3===this.state.mapdata.length) {
-          this.setState({spinall:false})
-         }
-    let res = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/search_items&params={"spec":{"itemsType":"avl_unit","propName":"sys_unique_id","propValueMask":"${imei}","sortType":"sys_name"},"force":1,"flags":1,"from":0,"to":0}&sid=${cookies.get("sid1")}`);
-    // let { data } = res.data;
+ 
   
-    
-    if (res.data.items.length > 0) {
      
-      not=not+1;
-      this.state.fruits.push({
-        name:this.state.mapdata[i].name,
-        imei:this.state.mapdata[i].uniqueId,
-        km : this.state.mapdata[i].km,
-        R_Value : this.state.mapdata[i].R_Value,
-       VIN : this.state.mapdata[i].VIN,
-        error:'uniqueId already exist',
-      });
     
-      localStorage.setItem("employees", JSON.stringify(this.state.fruits));
+    var counter3 = 0;
+    for (let index = 0; index < this.state.mapdata.length; index++) {
      
-    }
-      else if (res.data.items.length <= 0) {
-        if (name.length <= 3) {
-          not = not + 1;
-            this.setState({ spinall: false })
-            this.state.fruits.push({
-              name:this.state.mapdata[i].name,
-              imei:this.state.mapdata[i].uniqueId,
-              km : this.state.mapdata[i].km,
-              R_Value : this.state.mapdata[i].R_Value,
-             VIN : this.state.mapdata[i].VIN,
-              error:'name is short',
-            });
-         
-            localStorage.setItem("employees", JSON.stringify(this.state.fruits));
+      await $.ajax({
+        type: "PUT",
+        enctype: "application/json",
+        processData: !1,
+        contentType: !1,
+        crossDomain: true,
+        dataType: "jsonp",
+        url: `https://hst-api.wialon.com/wialon/ajax.html?svc=resource/update_driver&params={"itemId":${this.state.source_id},"id":0,"callMode":"create","n":"${this.state.mapdata[index].Name}","p":"","c":"${this.state.mapdata[index].Code}","ds":""}&sid=${cookies.get("sid1")}`,
+        success: function (result) {
+          counter3++;
+          console.log(counter3,this.state.mapdata.length);
           
-            
-        }
+          if (counter3 === this.state.mapdata.length) {
+            toast.success("done");
+            this.setState({ spinall: false });
+           
+          }
+        }.bind(this),
 
-
-  
-    let res1 = await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/create_unit&params={"creatorId":${cookies.get("iduser")},"name":"${name}","hwTypeId":${this.state.sto},"dataFlags":1}&sid=${cookies.get("sid1")}`);
-    // let { data } = res1.data;
-  
-   
-     
-     await this.addiemi(imei, res1.data.item.id)
-     await axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=unit/update_calc_flags&params={"itemId":${res1.data.item.id},"newValue":"0x513"}&sid=${cookies.get("sid1")}`)
-     await  axios.post(`https://hst-api.wialon.com/wialon/ajax.html?svc=core/batch&params={"params":[{"svc":"item/update_custom_property","params":{"itemId":${res1.data.item.id},"name":"img_rot","value":1}}],"flags":0}&sid=${cookies.get("sid1")}`);
-     await  this.addkm(km, res1.data.item.id)
-     await  this.addR_value(R_Value, res1.data.item.id)
-     await this.addVIN(VIN, res1.data.item.id)
-       
-      counter=counter+1      
-      }
-
-    }catch (error) {
-      console.log(error);
-      if (counter3===this.state.mapdata.length) {
-        this.setState({spinall:false})
-       }
+      })
     }
-    // console.log('counter',counter);
-    // console.log('counter3',counter3);
-    // console.log('lenth',lenth);
-    // console.log('i',i);
-      // console.log('this.state.mapdata.length',this.state.mapdata.length);
-    if (counter3===this.state.mapdata.length) {
-    
-        if (counter>0) {
-          toast.success(`Item added successfully ${counter}`)
-        }
-        if (counter===this.state.mapdata.length) {
+
+
+  
+
          
-          setTimeout(() => {
-            return ( window.location.href='/Succes')
-          }, 2000);
-          
-        }
-       
-       if (this.state.mapdata.length-counter>0) {
-        toast.error(`Failed to adds ${this.state.mapdata.length-counter}`)
-      setTimeout(() => {
-        return (this.onSubmit())
-      }, 2000);
-      
-      
-      }
-        
-    
-    
-    }
-  }
-  }
+     
 };
 
 onSubmit(){
@@ -726,15 +660,10 @@ onSubmit(){
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Unit_Name</th>
+                        <th>Name</th>
 
-                        <th> IMEI </th>
-                        <th> Mileage</th>
-
-
-
-                        <th> Report_Value</th>
-                        <th> VIN_Number</th>
+                        <th> Code </th>
+                     
                         <th> Add</th>
                       </tr>
                     </thead>
@@ -742,14 +671,10 @@ onSubmit(){
                       {this.state.mapdata.map((item, i) =>
                         <tr key={i} >
                           <td>{item.num}</td>
-                          <td>{item.name}</td>
+                          <td>{item.Name}</td>
 
-                          <td>{item.uniqueId}</td>
-                          <td>{item.km}</td>
-
-
-                          <td>{item.R_Value}</td>
-                          <td>{item.VIN}</td>
+                          <td>{item.Code}</td>
+                        
                           <td>
 
                             <div style={{ display: 'flex', justifyContent: 'center' }} onClick={() => {
@@ -820,4 +745,4 @@ onSubmit(){
 
   }
 }
-export default User;
+export default Tags;

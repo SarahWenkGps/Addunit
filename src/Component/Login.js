@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './task.css';
+import '../assets/css/task.css';
 // import Iframe from 'react-iframe';
 import host from './host';
 

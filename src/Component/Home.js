@@ -1,5 +1,5 @@
 import React from 'react';
-import './task.css';
+import '../assets/css/task.css';
 import { Link  } from 'react-router-dom';
 import Context from './context';
 import { Pane, Dialog ,SelectMenu,Button} from "evergreen-ui";
@@ -536,7 +536,7 @@ this.setState({ check: "login"})
                 <Navbar expand="lg" id="navmai">
 
 
-                  <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} /> </Navbar.Brand>
+                  <Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('../assets/img/logo.png')} style={{ height: 30 }} /> </Navbar.Brand>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ color: 'white' }} />
                   <Navbar.Collapse id="basic-navbar-nav" style={{ color: 'white' }} >
 

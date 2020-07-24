@@ -31,7 +31,7 @@ class Succes extends Component{
 <Navbar expand="lg" id="navmai">
 
 
-<Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} alt='alt' /> </Navbar.Brand>
+<Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('../assets/img/logo.png')} style={{ height: 30 }} alt='alt' /> </Navbar.Brand>
 <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ color: 'white' }} />
 <Navbar.Collapse id="basic-navbar-nav" style={{ color: 'white' }} >
 
@@ -70,9 +70,9 @@ class Succes extends Component{
 </div>
 <div style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',marginTop:'2%',flexDirection:'column'}} >
 
-<img src={require('./traffic-jam.png')} alt='alt' style={{height:'130px'}} />
+<img src={require('../assets/img/traffic-jam.png')} alt='alt' style={{height:'130px'}} />
 
-<img src={require('./tick.png')} alt='alt' style={{height:'130px'}} />
+<img src={require('../assets/img/tick.png')} alt='alt' style={{height:'130px'}} />
                 </div>
 
 

@@ -8,7 +8,8 @@ import Failed from './Component/Failed';
 import Succes from './Component/Succes';
 import Form1 from './Component/Form1';
 import Accounts from './Component/Accounts';
-
+import Tags from './Component/Tags';
+import Units from './Component/Units';
 class App extends Component{
 render() {
   return (
@@ -29,7 +30,8 @@ render() {
     <Route path ='/Failed' component={Failed} />
     <Route path ='/Succes' component={Succes} />
     <Route path ='/Form1' component={Form1} />
-   
+    <Route path ='/Tags' component={Tags} />
+    <Route path ='/Units' component={Units} />
     <Route path ='/Accounts' component={Accounts} />
   
    

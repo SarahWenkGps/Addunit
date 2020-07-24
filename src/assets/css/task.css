@@ -84,8 +84,37 @@
     width: 100%;
 }
 
+
+#date_btn1,
+#date_btn2,
+#date_btn3 {
+  cursor: pointer;
+  height: 43px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #e5e9f2;
+  border-radius: 5px;
+  color: #828282;
+}
+#date_btn {
+  cursor: pointer;
+  height: 43px;
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(106, 170, 104);
+  border: 1px solid #e5e9f2;
+  border-radius: 5px;
+  color: #fff;
+}
+
+
 #homediv{
-    background-image: url(./logo-bg.png);
+    background-image: url(../img/logo-bg.png);
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;

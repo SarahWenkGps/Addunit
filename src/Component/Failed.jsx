@@ -120,7 +120,7 @@ class Failed extends Component{
 <Navbar expand="lg" id="navmai">
 
 
-<Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('./logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
+<Navbar.Brand style={{ paddingLeft: '3%' }}>  <img src={require('../assets/img/logo.png')} style={{ height: 30 }} alt='img' /> </Navbar.Brand>
 <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ color: 'white' }} />
 <Navbar.Collapse id="basic-navbar-nav" style={{ color: 'white' }} >
 
