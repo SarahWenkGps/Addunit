@@ -6,7 +6,7 @@
     "@material-ui/core": "^4.9.7",
     "@material-ui/icons": "^4.9.1",
     "@reactions/component": "^2.0.2",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "custom-error": "^0.2.1",
     "dom-to-image": "^2.6.0",
